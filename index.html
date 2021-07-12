@@ -14,14 +14,14 @@
 
       <div class="steps">
         <div class="steps-content">
-          {{ steps[activeIndex].text }}
+          {{ currentStep.text }}
         </div>
 
         <ul class="steps-list">
           <li 
             :class="['steps-item', {
-              'active': idx === currentStep,
-              'done': idx < currentStep
+              'active': idx === activeIndex,
+              'done': idx < activeIndex
             }]" 
             v-for="(step, idx) in steps"
             :key="step.text"
@@ -31,10 +31,10 @@
           </li>
         </ul>
 
-        <div v-if="!finished">
+        <div v-if="!isFinished && lastStep">
           <button 
             class="btn"
-            :disabled="prevBtnDisabled"
+            :disabled="isDisabled"
             @click="prev"
           >
             Назад
@@ -43,11 +43,11 @@
             class="btn primary"
             @click="nextOfFinish"
           >
-            {{ next }}
+            {{ nextBtnText }}
           </button>
         </div>
 
-        <div v-if="lastStep && finished">
+        <div v-else>
           <button 
             class="btn"
             @click="reset"
